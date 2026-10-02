@@ -1,0 +1,35 @@
+Creative Commons Attribution 4.0 International (CC BY 4.0)
+https://creativecommons.org/licenses/by/4.0/
+
+Everything under this directory comes from the GeoNames data dump
+(https://download.geonames.org/export/dump/), made by GeoNames
+(https://www.geonames.org/). The dump's readme.txt says:
+
+  This work is licensed under a Creative Commons Attribution 4.0 License,
+  see https://creativecommons.org/licenses/by/4.0/
+  The Data is provided "as is" without warranty or any representation of
+  accuracy, timeliness or completeness.
+
+and GeoNames' terms ask: "You should give credit to GeoNames when using data
+or web services with a link or another reference to GeoNames."
+
+Credit: GeoNames (https://www.geonames.org/), CC BY 4.0
+
+The files under raw/<snapshot>/ are GeoNames' own, byte for byte; each
+snapshot's MANIFEST.json records the URL, size, sha256 and Last-Modified of
+every file.
+
+The Parquet under parquet/<snapshot>/ was made from them:
+
+  - the columns were named after readme.txt in snake case and typed: ids,
+    population, elevation and dem as integers, latitude and longitude as
+    floats, modification_date as a date, the rest as the text of the file
+  - the four is_* columns of the alternate names ('1' or empty) became
+    booleans
+  - the gazetteer gained a point geometry from longitude and latitude
+    (WGS 84) and was cut, between countries, into several files
+  - rows were sorted; values were not changed otherwise
+
+The code that fetches, checks and converts is MIT, in the repository this
+dataset was built from (https://github.com/yuiseki/geonames), and does not
+apply here.

@@ -1,0 +1,49 @@
+# Where this data comes from and what was done to it.
+
+source:
+  name: GeoNames data dump
+  publisher: GeoNames (Unxos GmbH, St. Gallen)
+  site: https://www.geonames.org/
+  dump: https://download.geonames.org/export/dump/
+  licence:
+    applied: CC BY 4.0
+    attribution_required: true
+    share_alike: false
+    credit: GeoNames (https://www.geonames.org/), CC BY 4.0
+
+snapshots:
+  note: |
+    GeoNames rebuilds the dump every night at the same URLs, with no version
+    number or checksum. A snapshot is named after the UTC day of
+    allCountries.zip's Last-Modified. The Last-Modified of every file is read
+    before and after a download, and the download stops if any moved.
+  "20261001":
+    allcountries_last_modified: Thu, 01 Oct 2026 02:08:51 GMT
+    fetched: 2026-10-01
+    fetched_by: study-geoai-algo-py scripts/mirror_geonames.py, adopted with 01_download.py --from after checking every sha256
+    rows:
+      geoname: 13472217
+      alternate_names: 19219062
+      hierarchy: 519183
+      admin_code5: 78514
+      geoname_jp: 103761
+      alternate_names_jp_ja: 174920
+    geoname_parts:
+      part-00: {rows: 3936115, countries: ["", FO]}
+      part-01: {rows: 3987139, countries: [FR, NL]}
+      part-02: {rows: 2874228, countries: [NO, UM]}
+      part-03: {rows: 2674735, countries: [US, ZW]}
+
+not_taken:
+  - the per-country zips and cities500/1000/5000/15000, which are subsets of allCountries
+  - alternateNames.zip, which readme.txt calls obsolete in favour of V2
+  - featureCodes in languages other than English
+
+modifications:
+  raw: none. GeoNames' files, byte for byte.
+  parquet:
+    - columns named after readme.txt in snake case and typed by name; a value that does not fit stops the build
+    - is_* flags of the alternate names as booleans
+    - the gazetteer gains a point geometry (WGS 84) and is cut between countries
+    - rows sorted by country_code and geonameid (the gazetteer) or by key
+    - written without bloom filters, which DuckDB reads for every row group a filter touches
