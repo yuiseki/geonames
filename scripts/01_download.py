@@ -18,7 +18,7 @@ meanwhile comes back whole. The Last-Modified of every file is read before
 and after; if any moved, the run stops.
 
     uv run python scripts/01_download.py                         # tonight's dump
-    uv run python scripts/01_download.py --from /www/html/static/geonames/2026-10-01
+    uv run python scripts/01_download.py --from /sata_hdd_24tb/www/html/static/geonames/2026-10-01
 
 --from adopts a snapshot fetched earlier by study-geoai-algo-py's
 mirror_geonames.py: its raw/ files are copied only if each has the size and
